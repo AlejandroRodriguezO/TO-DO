@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 import 'package:meta/meta.dart' show required;
@@ -14,8 +15,12 @@ class TodoModel extends HiveObject {
   @HiveField(2)
   bool listo;
 
+  @HiveField(3)
+  Color color;
+
   TodoModel({
     @required this.tarea,
+    @required this.color,
   })  : this.id = Uuid().v1(),
         this.listo = false;
 }

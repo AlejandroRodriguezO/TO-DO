@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:todo/app/data/model/cats.dart';
 import 'package:todo/app/data/model/todo_model.dart';
 import 'package:todo/app/modules/home/controllers/home_controller.dart';
+import 'package:todo/app/utils/responsive.dart';
 
 class TodoForm extends StatefulWidget {
   final String type, title;
@@ -26,14 +29,25 @@ class _TodoFormState extends State<TodoForm> {
   String tarea = '';
   @override
   Widget build(BuildContext context) {
+    final color = Colors.primaries[Random().nextInt(Colors.primaries.length)];
+    final responsive = Responsive.of(context);
     final todoController = Get.find<HomeController>();
     return AlertDialog(
-      title: Text(widget.title),
+      title: Text(
+        widget.title,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: responsive.ip(2.5),
+        ),
+      ),
       content: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Form(
           key: _formKey,
           child: TextFormField(
+            style: TextStyle(
+              fontSize: responsive.ip(2),
+            ),
             initialValue: widget.todo != null ? widget.todo.tarea : '',
             onSaved: (value) => tarea = value,
             decoration: InputDecoration(
@@ -55,7 +69,10 @@ class _TodoFormState extends State<TodoForm> {
                       Get.snackbar('Error', 'Texto vacio');
                       return;
                     }
-                    todoController.agregar(TodoModel(tarea: tarea));
+                    todoController.agregar(TodoModel(
+                      tarea: tarea,
+                      color: color,
+                    ));
                   } else {
                     if (tarea.trim().length < 1) {
                       Get.snackbar(
@@ -88,20 +105,22 @@ class _TodoFormState extends State<TodoForm> {
                     Get.snackbar('Error', 'Texto vacio');
                     return;
                   }
-                  todoController.agregar(TodoModel(tarea: tarea));
+                  todoController.agregar(TodoModel(tarea: tarea, color: color));
                 } else {
                   if (tarea.trim().length < 1) {
                     Get.snackbar(
                       'Error',
                       'Texto vacio',
                       duration: Duration(seconds: 1),
-                      snackPosition: SnackPosition.TOP,
                       backgroundColor: Colors.grey,
                       colorText: Colors.black,
                     );
                     return;
                   }
-                  todoController.actulizar(widget.todo, tarea);
+                  todoController.actulizar(
+                    widget.todo,
+                    tarea,
+                  );
                 }
                 Get.back();
               },
