@@ -18,6 +18,7 @@ class TodoModelAdapter extends TypeAdapter<TodoModel> {
     };
     return TodoModel(
       tarea: fields[1] as String,
+      color: fields[3] as String,
     )
       ..id = fields[0] as String
       ..listo = fields[2] as bool;
@@ -26,13 +27,15 @@ class TodoModelAdapter extends TypeAdapter<TodoModel> {
   @override
   void write(BinaryWriter writer, TodoModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.tarea)
       ..writeByte(2)
-      ..write(obj.listo);
+      ..write(obj.listo)
+      ..writeByte(3)
+      ..write(obj.color);
   }
 
   @override

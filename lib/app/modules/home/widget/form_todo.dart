@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:todo/app/data/model/cats.dart';
 import 'package:todo/app/data/model/todo_model.dart';
 import 'package:todo/app/modules/home/controllers/home_controller.dart';
@@ -36,8 +37,9 @@ class _TodoFormState extends State<TodoForm> {
       title: Text(
         widget.title,
         textAlign: TextAlign.center,
-        style: TextStyle(
+        style: GoogleFonts.poppins().copyWith(
           fontSize: responsive.ip(2.5),
+          color: Get.isDarkMode ? Colors.white : Colors.black,
         ),
       ),
       content: Padding(
@@ -45,12 +47,16 @@ class _TodoFormState extends State<TodoForm> {
         child: Form(
           key: _formKey,
           child: TextFormField(
-            style: TextStyle(
+            style: GoogleFonts.poppins().copyWith(
               fontSize: responsive.ip(2),
+              color: Get.isDarkMode ? Colors.white : Colors.black,
             ),
             initialValue: widget.todo != null ? widget.todo.tarea : '',
             onSaved: (value) => tarea = value,
             decoration: InputDecoration(
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Get.isDarkMode ? Colors.pink : Colors.blue)),
               hintText: "Agregar Tarea",
             ),
           ),
@@ -71,7 +77,7 @@ class _TodoFormState extends State<TodoForm> {
                     }
                     todoController.agregar(TodoModel(
                       tarea: tarea,
-                      color: color,
+                      color: color.toString(),
                     ));
                   } else {
                     if (tarea.trim().length < 1) {
@@ -105,7 +111,8 @@ class _TodoFormState extends State<TodoForm> {
                     Get.snackbar('Error', 'Texto vacio');
                     return;
                   }
-                  todoController.agregar(TodoModel(tarea: tarea, color: color));
+                  todoController.agregar(
+                      TodoModel(tarea: tarea, color: color.toString()));
                 } else {
                   if (tarea.trim().length < 1) {
                     Get.snackbar(

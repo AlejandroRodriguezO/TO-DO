@@ -16,7 +16,7 @@ class TodoModel extends HiveObject {
   bool listo;
 
   @HiveField(3)
-  Color color;
+  String color;
 
   TodoModel({
     @required this.tarea,

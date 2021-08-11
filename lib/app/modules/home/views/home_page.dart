@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:todo/app/data/model/todo_model.dart';
+import 'package:todo/app/modules/home/controllers/theme_controller.dart';
 import 'package:todo/app/modules/home/widget/build_body.dart';
 import 'package:todo/app/modules/home/widget/form_todo.dart';
 import 'package:todo/app/utils/responsive.dart';
@@ -10,6 +13,8 @@ import 'package:todo/app/utils/responsive.dart';
 import '../controllers/home_controller.dart';
 
 class HomePage extends StatelessWidget {
+  final darkMode = Get.put(TemaController());
+
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive.of(context);
@@ -20,8 +25,19 @@ class HomePage extends StatelessWidget {
         _.frases();
         return Scaffold(
             appBar: AppBar(
-              title: Text('TODO'),
+              elevation: 0,
+              title: Text(_.percent == 100.0 ? 'Tareas Completas' : 'TODO'),
               centerTitle: true,
+              actions: [
+                IconButton(
+                  icon: Icon(Get.isDarkMode
+                      ? Icons.lightbulb_outline
+                      : FontAwesomeIcons.moon),
+                  onPressed: () => Get.isDarkMode
+                      ? darkMode.temaClaro()
+                      : darkMode.temaOscuro(),
+                )
+              ],
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () => _alertInput(
@@ -39,12 +55,10 @@ class HomePage extends StatelessWidget {
                           child: SvgPicture.asset('assets/noData.svg'),
                         ),
                         Center(
-                          child: Text(
-                            'No Hay PENDIENTES',
-                            style: TextStyle(
+                          child: Text('No Hay PENDIENTES',
+                              style: GoogleFonts.poppins().copyWith(
                                 fontSize: responsive.ip(2),
-                                fontWeight: FontWeight.bold),
-                          ),
+                              )),
                         ),
                       ],
                     ),
