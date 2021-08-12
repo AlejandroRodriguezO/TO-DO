@@ -1,12 +1,27 @@
+import 'dart:convert';
 import 'dart:math';
 
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:todo/app/data/model/cats.dart';
 import 'package:todo/app/data/model/todo_model.dart';
-import 'package:http/http.dart' as http;
+import 'package:todo/app/data/services/remote_services.dart';
 
 class HomeController extends GetxController {
+  List<CatsModel> datosList;
+
+  void fetchDatos() async {
+    final datos = await RemoteServices().fetchDatos();
+
+    if (datos != null) {
+      datosList = datos;
+    }
+  }
+
+ 
+
+
   List<TodoModel> _todos = [];
   List<TodoModel> get todos => _todos;
   Box<TodoModel> todoBox;
@@ -53,24 +68,5 @@ class HomeController extends GetxController {
     _todos[index].tarea = newTarea;
     todoBox.putAt(index, _todos[index]);
     update();
-  }
-
-  List<Datum> date = [];
-
-  static var client = http.Client();
-  var rng = new Random();
-
-  frases() async {
-    for (var i = 0; i < 1; i++) {
-      final uri = Uri.parse(
-          'https://catfact.ninja/facts?limit=1&max_length=100&page=${rng.nextInt(50)}');
-      final response =
-          await client.get(uri, headers: {'Accept': 'application/json'});
-      if (response.statusCode == 200) {
-        final result = catsFromMap(response.body);
-        date = result.data;
-        update();
-      }
-    }
   }
 }

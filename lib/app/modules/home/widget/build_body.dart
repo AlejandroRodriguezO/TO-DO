@@ -12,7 +12,6 @@ class BuildBody extends StatelessWidget {
     return GetBuilder<HomeController>(
       init: HomeController(),
       builder: (_) {
-        
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -45,7 +44,6 @@ class BuildBody extends StatelessWidget {
                     style: TextStyle(
                         color: Get.isDarkMode ? Colors.white : Colors.black),
                   ),
-                  
                 ],
               ),
             ),
@@ -69,6 +67,8 @@ class BuildBody extends StatelessWidget {
             Divider(),
             Expanded(
               child: ListView.builder(
+                shrinkWrap: true,
+                reverse: true,
                 itemCount: _.todos.length,
                 itemBuilder: (context, index) {
                   String valueString = _.todos[index].color
@@ -87,7 +87,7 @@ class BuildBody extends StatelessWidget {
                             type: "actualizar",
                             todo: _.todos[index],
                             title: 'Actualizar',
-                            dato: _.date,
+                            dato: _.datosList,
                           ),
                         );
                       },

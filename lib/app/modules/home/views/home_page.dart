@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:todo/app/data/model/todo_model.dart';
 import 'package:todo/app/modules/home/controllers/theme_controller.dart';
 import 'package:todo/app/modules/home/widget/build_body.dart';
 import 'package:todo/app/modules/home/widget/form_todo.dart';
@@ -21,8 +20,8 @@ class HomePage extends StatelessWidget {
     return GetBuilder<HomeController>(
       init: HomeController(),
       builder: (_) {
+        _.fetchDatos();
         _.percent = (_.isDoneCount / _.todos.length) * 100;
-        _.frases();
         return Scaffold(
             appBar: AppBar(
               elevation: 0,
@@ -40,9 +39,7 @@ class HomePage extends StatelessWidget {
               ],
             ),
             floatingActionButton: FloatingActionButton(
-              onPressed: () => _alertInput(
-                null,
-              ),
+              onPressed: () => _alertInput(),
               child: Icon(Icons.add_outlined),
             ),
             body: _.todos.length != 0
@@ -67,13 +64,13 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Future _alertInput(TodoModel todo) async {
+  Future _alertInput() async {
     return Get.dialog(
         GetBuilder<HomeController>(
           init: HomeController(),
           builder: (_) {
             return TodoForm(
-              dato: _.date,
+              dato: _.datosList,
               type: 'agregar',
               title: 'Algo Nuevo?',
             );

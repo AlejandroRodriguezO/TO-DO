@@ -12,7 +12,7 @@ import 'package:todo/app/utils/responsive.dart';
 class TodoForm extends StatefulWidget {
   final String type, title;
   final TodoModel todo;
-  final List<Datum> dato;
+  final List<CatsModel> dato;
 
   const TodoForm({
     Key key,
@@ -69,7 +69,7 @@ class _TodoFormState extends State<TodoForm> {
               widget.dato.length,
               (index) => TextButton.icon(
                 onPressed: () {
-                  tarea = widget.dato[index].fact;
+                  tarea = widget.dato[index].catqfact;
                   if (widget.type == "agregar") {
                     if (tarea.trim().length < 1) {
                       Get.snackbar('Error', 'Texto vacio');
