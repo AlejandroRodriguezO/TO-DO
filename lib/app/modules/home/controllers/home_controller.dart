@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
@@ -18,9 +19,6 @@ class HomeController extends GetxController {
       datosList = datos;
     }
   }
-
- 
-
 
   List<TodoModel> _todos = [];
   List<TodoModel> get todos => _todos;

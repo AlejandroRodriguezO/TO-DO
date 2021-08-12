@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:todo/app/modules/home/controllers/home_controller.dart';
 import 'package:todo/app/modules/home/widget/form_todo.dart';
 import 'package:todo/app/utils/responsive.dart';
+import 'package:intl/intl.dart';
 
 class BuildBody extends StatelessWidget {
   @override
@@ -68,7 +69,6 @@ class BuildBody extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 shrinkWrap: true,
-                reverse: true,
                 itemCount: _.todos.length,
                 itemBuilder: (context, index) {
                   String valueString = _.todos[index].color
@@ -76,6 +76,10 @@ class BuildBody extends StatelessWidget {
                       .split(')')[0]; // kind of hacky..
                   int value = int.parse(valueString, radix: 16);
                   Color otherColor = new Color(value);
+
+                  final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm');
+
+                  final String fecha = formatter.format(_.todos[index].date);
 
                   return Container(
                     color: otherColor.withOpacity(0.2),
@@ -108,6 +112,13 @@ class BuildBody extends StatelessWidget {
                           decoration: _.todos[index].listo
                               ? TextDecoration.lineThrough
                               : TextDecoration.none,
+                        ),
+                      ),
+                      subtitle: Text(
+                        fecha,
+                        style: TextStyle(
+                          fontSize: responsive.ip(1.5),
+                          fontStyle: FontStyle.italic
                         ),
                       ),
                       trailing: IconButton(

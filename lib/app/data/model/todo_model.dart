@@ -18,9 +18,13 @@ class TodoModel extends HiveObject {
   @HiveField(3)
   String color;
 
+  @HiveField(4)
+  DateTime date;
+
   TodoModel({
     @required this.tarea,
     @required this.color,
   })  : this.id = Uuid().v1(),
+  this.date = DateTime.now(),
         this.listo = false;
 }
