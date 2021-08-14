@@ -7,7 +7,6 @@ class TemaController extends GetxController {
   SharedPreferences preferences;
 
   String prefkey = "isDarkModeKey";
-  
 
   void temaClaro() {
     Get.changeTheme(
@@ -22,7 +21,6 @@ class TemaController extends GetxController {
     Get.changeTheme(
       ThemeData.dark().copyWith(
         textTheme: GoogleFonts.poppinsTextTheme(),
-        
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(
             foregroundColor: MaterialStateProperty.all(Colors.pinkAccent),
@@ -46,13 +44,12 @@ class TemaController extends GetxController {
   void cargarTema() {
     bool isDarkMode = preferences.getBool(prefkey);
 
-
     if (isDarkMode == null) {
       preferences.setBool(prefkey, false);
       isDarkMode = false;
     }
 
-    (isDarkMode) ? temaOscuro() : temaClaro();
+    Get.changeThemeMode((isDarkMode) ? ThemeMode.dark : ThemeMode.light);
   }
 
   Future<void> cargarPreferencias() async {
