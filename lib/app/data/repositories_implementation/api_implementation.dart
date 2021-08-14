@@ -2,21 +2,23 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:todo/app/data/model/cats.dart';
+import 'package:todo/app/data/repositories/api_repository.dart';
+import 'package:http/http.dart' as http;
 
-class RemoteServices {
-  static final client = http.Client();
-
-  Future<List<CatsModel>> fetchDatos() async {
-    var rng = new Random();
+class ApiImplemetation implements ApiRepository {
+  @override
+  Future<List<CatsModel>> fetchDatos(String url) async {
+    final client = http.Client();
 
     Map<String, String> headers = {
       'Accept': 'application/json',
     };
+    var rng = new Random();
     for (var i = 0; i < 1; i++) {
       final uri = Uri.parse(
-          'https://catfact.ninja/facts?limit=1&max_length=100&page=${rng.nextInt(50)}');
+          '$url/facts?limit=1&max_length=100&page=${rng.nextInt(50)}');
+
       final response = await client.get(uri, headers: headers);
 
       if (response.statusCode == 200) {

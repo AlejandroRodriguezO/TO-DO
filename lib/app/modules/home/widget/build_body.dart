@@ -67,96 +67,121 @@ class BuildBody extends StatelessWidget {
             ),
             Divider(),
             Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: _.todos.length,
-                itemBuilder: (context, index) {
-                  String valueString = _.todos[index].color
-                      .split('(0x')[1]
-                      .split(')')[0]; // kind of hacky..
-                  int value = int.parse(valueString, radix: 16);
-                  Color otherColor = new Color(value);
+                child:ListView.builder(
+//                      reverse: true,
+                  shrinkWrap: true,
+              itemCount: _.todos.length,
+              itemBuilder: (context, index) {
+                String valueString = _.todos[index].color
+                    .split('(0x')[1]
+                    .split(')')[0]; // kind of hacky..
+                int value = int.parse(valueString, radix: 16);
+                Color otherColor = new Color(value);
 
-                  final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm');
+                final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm');
 
-                  final String fecha = formatter.format(_.todos[index].date);
+                final String fecha = formatter.format(_.todos[index].date);
 
-                  return Container(
-                    color: otherColor.withOpacity(0.2),
-                    margin: EdgeInsets.all(5),
-                    child: ListTile(
-                      onTap: () {
-                        Get.dialog(
-                          TodoForm(
-                            type: "actualizar",
-                            todo: _.todos[index],
-                            title: 'Actualizar',
-                            dato: _.datosList,
-                          ),
-                        );
-                      },
-                      leading: IconButton(
-                        icon: _.todos[index].listo
-                            ? Icon(
-                                Icons.check_circle_outline,
-                                color: otherColor,
-                              )
-                            : Icon(Icons.radio_button_unchecked),
-                        onPressed: () => _.cambiarEstado(_.todos[index]),
-                      ),
-                      title: Text(
-                        _.todos[index].tarea,
-                        style: TextStyle(
-                          fontSize: responsive.ip(2),
-                          color: otherColor,
-                          decoration: _.todos[index].listo
-                              ? TextDecoration.lineThrough
-                              : TextDecoration.none,
-                        ),
-                      ),
-                      subtitle: Text(
-                        fecha,
-                        style: TextStyle(
-                          fontSize: responsive.ip(1.5),
-                          fontStyle: FontStyle.italic
-                        ),
-                      ),
-                      trailing: IconButton(
-                        onPressed: () => Get.dialog(AlertDialog(
-                          title: Text(
-                            'Desea Eliminarlo?',
-                            style: GoogleFonts.poppins().copyWith(
-                              fontSize: responsive.ip(2.5),
-                              color:
-                                  Get.isDarkMode ? Colors.white : Colors.black,
-                            ),
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                _.eliminar(_.todos[index]);
-                                Get.back();
-                              },
-                              child: Text('Aceptar'),
-                            ),
-                            TextButton(
-                                onPressed: () => Get.back(),
-                                child: Text('Cancelar'))
-                          ],
-                        )),
-                        icon: Icon(
-                          Icons.delete_outline,
-                          color: otherColor,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+                return CustomList(
+                  otherColor: otherColor,
+                  responsive: responsive,
+                  fecha: fecha,
+                  index: index,
+                  homeController: _,
+                );
+              },
+            )),
           ],
         );
       },
+    );
+  }
+}
+
+class CustomList extends StatelessWidget {
+  const CustomList({
+    @required this.otherColor,
+    @required this.responsive,
+    @required this.fecha,
+    @required this.index,
+    @required this.homeController,
+  });
+
+  final Color otherColor;
+  final Responsive responsive;
+  final String fecha;
+  final int index;
+  final HomeController homeController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: otherColor.withOpacity(0.2),
+      margin: EdgeInsets.all(5),
+      child: ListTile(
+        onTap: () {
+          Get.dialog(
+            TodoForm(
+              type: "actualizar",
+              todo: homeController.todos[index],
+              title: 'Actualizar',
+              dato: homeController.datosList,
+            ),
+          );
+        },
+        leading: IconButton(
+          icon: homeController.todos[index].listo
+              ? Icon(
+                  Icons.check_circle_outline,
+                  color: otherColor,
+                )
+              : Icon(Icons.radio_button_unchecked),
+          onPressed: () =>
+              homeController.cambiarEstado(homeController.todos[index]),
+        ),
+        title: Text(
+          homeController.todos[index].tarea,
+          style: TextStyle(
+            fontSize: responsive.ip(2),
+            color: otherColor,
+            decoration: homeController.todos[index].listo
+                ? TextDecoration.lineThrough
+                : TextDecoration.none,
+          ),
+        ),
+        subtitle: Text(
+          fecha,
+          style: TextStyle(
+              color: Get.isDarkMode ? Colors.white : Colors.black,
+              fontSize: responsive.ip(1.5),
+              fontStyle: FontStyle.italic),
+        ),
+        trailing: IconButton(
+          onPressed: () => Get.dialog(AlertDialog(
+            title: Text(
+              'Desea Eliminarlo?',
+              style: GoogleFonts.poppins().copyWith(
+                fontSize: responsive.ip(2.5),
+                color: Get.isDarkMode ? Colors.white : Colors.black,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  homeController.eliminar(homeController.todos[index]);
+                  Get.back();
+                },
+                child: Text('Aceptar'),
+              ),
+              TextButton(onPressed: () => Get.back(), child: Text('Cancelar'))
+            ],
+          )),
+          icon: Icon(
+            Icons.delete_outline,
+            color: otherColor,
+          ),
+        ),
+      ),
     );
   }
 }

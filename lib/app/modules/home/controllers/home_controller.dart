@@ -1,19 +1,21 @@
-import 'dart:convert';
-import 'dart:math';
-
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:todo/app/data/model/cats.dart';
 import 'package:todo/app/data/model/todo_model.dart';
-import 'package:todo/app/data/services/remote_services.dart';
+import 'package:todo/app/data/repositories_implementation/api_implementation.dart';
 
 class HomeController extends GetxController {
   List<CatsModel> datosList;
 
+  GlobalKey<AnimatedListState> aList = GlobalKey<AnimatedListState>();
+
+  final url = 'https://catfact.ninja/';
+
   void fetchDatos() async {
-    final datos = await RemoteServices().fetchDatos();
+    final repository = Get.find<ApiImplemetation>();
+
+    final datos = await repository.fetchDatos(url);
 
     if (datos != null) {
       datosList = datos;
@@ -41,7 +43,7 @@ class HomeController extends GetxController {
   agregar(TodoModel todo) async {
     _todos.add(todo);
     await todoBox.add(todo);
-
+    Get.back();
     update();
   }
 
