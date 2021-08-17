@@ -20,7 +20,6 @@ class HomePage extends StatelessWidget {
     return GetBuilder<HomeController>(
       init: HomeController(),
       builder: (_) {
-        _.fetchDatos();
         _.percent = (_.isDoneCount / _.todos.length) * 100;
         return Scaffold(
             appBar: AppBar(

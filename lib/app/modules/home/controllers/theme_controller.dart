@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todo/app/utils/constantes.dart';
 
 class TemaController extends GetxController {
   SharedPreferences preferences;
 
-  String prefkey = "isDarkModeKey";
+  String prefkey = Constantes.THEME_KEY;
 
   void temaClaro() {
     Get.changeTheme(

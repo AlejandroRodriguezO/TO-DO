@@ -4,8 +4,10 @@ import 'package:hive/hive.dart';
 import 'package:todo/app/data/model/cats.dart';
 import 'package:todo/app/data/model/todo_model.dart';
 import 'package:todo/app/data/repositories_implementation/api_implementation.dart';
+import 'package:todo/app/utils/constantes.dart';
 
 class HomeController extends GetxController {
+
   List<CatsModel> datosList;
 
   GlobalKey<AnimatedListState> aList = GlobalKey<AnimatedListState>();
@@ -29,7 +31,8 @@ class HomeController extends GetxController {
 
   double percent = 0.0;
   HomeController() {
-    todoBox = Hive.box<TodoModel>('todos');
+    fetchDatos();
+    todoBox = Hive.box<TodoModel>(Constantes.TODO_NOMBRE);
     _todos = [];
     isDoneCount = todoBox.values.where((f) => f.listo).length;
 
